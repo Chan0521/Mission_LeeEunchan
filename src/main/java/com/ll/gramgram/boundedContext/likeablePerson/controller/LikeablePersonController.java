@@ -60,4 +60,13 @@ public class LikeablePersonController {
 
         return "usr/likeablePerson/list";
     }
+    @GetMapping("/delete/{id}")
+    public String Likedelete(Member member) {
+
+        InstaMember instaMember = rq.getMember().getInstaMember();
+        LikeablePerson like = this.likeablePersonService.getInstaMember();
+        like.delete.getId();
+
+        return "usr/likeablePerson/list";
+    }
 }

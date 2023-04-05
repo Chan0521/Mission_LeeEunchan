@@ -50,4 +50,7 @@ public class LikeablePersonService {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
 
     }
+
+    public LikeablePerson getInstaMember() {
+    }
 }
