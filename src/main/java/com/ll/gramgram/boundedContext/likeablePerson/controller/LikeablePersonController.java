@@ -4,6 +4,7 @@ import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
+import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/likeablePerson")
 @RequiredArgsConstructor
+// 검증하고 서비스를 호출하는 컨트롤러
 public class LikeablePersonController {
     private final Rq rq;
     private final LikeablePersonService likeablePersonService;
@@ -36,40 +38,25 @@ public class LikeablePersonController {
         private final String username;
         private final int attractiveTypeCode;
     }
-
-    //케이스 4 : 한명의 인스타회원이 다른 인스타회원에게 중복으로 호감표시를 할 수 없습니다.
-    //예를들어 본인의 인스타ID가 aaaa, 상대의 인스타ID가 bbbb 라고 하자.
-    //aaaa 는 bbbb 에게 호감을 표시한다.(사유 : 외모)
-    //잠시 후 aaaa 는 bbbb 에게 다시 호감을 표시한다.(사유 : 외모)
-    //    # 어떠한 회원이 특정회원에 대해서 이미 호감표시를 했는지 검사하는 SQL, 질의결과가 하나라도 있다면 이미 호감을 표시한 경우이다.
-    //    # 여기서 1은 로그인한 회원의 인스트 계정 번호이고
-    //    # 여기서 2는 상대방의 인스타계정 번호이다.
-    //    SELECT *
-    //    FROM likeable_person
-    //    WHERE from_insta_member_id = 1
-    //    AND to_insta_member_id = 2;
-
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/add")
+    @PostMapping("/add") // 호감표시 추가하는 메소드
     public String add(@Valid AddForm addForm) {
         InstaMember instaMember = rq.getMember().getInstaMember();
         List<LikeablePerson> likeablePeople = instaMember.getFromLikeablePeople();
 
-        for(int i = 0; i <= likeablePeople.size(); i++){
-            System.out.println("지금: "+ addForm.getUsername() + "기존: " +likeablePeople.get(i).getToInstaMemberUsername());
-            if(addForm.getUsername() == likeablePeople.get(i).getToInstaMemberUsername()) {
-                    return;
+        if(likeablePeople.size() > 0 && likeablePeople.size() < 11) {
+            for(int i = 0; i <= likeablePeople.size(); i++){
+                if(addForm.getUsername().equals(likeablePeople.get(i).getToInstaMember().getUsername())) {
+                        return rq.historyBack(addForm.getUsername() + "님은 이미 등록되어 있습니다.");
+                    }
+                }
             }
-        }
         RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
         if (createRsData.isFail()) {
             return rq.historyBack(createRsData);
         }
-
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
-
-
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
