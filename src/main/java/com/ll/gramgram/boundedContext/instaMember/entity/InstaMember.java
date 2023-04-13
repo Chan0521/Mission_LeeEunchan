@@ -22,6 +22,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @ToString
 @Entity
 @Getter
+//로그인한 인스타 계정 정보
 public class InstaMember {
     @Id
     @GeneratedValue(strategy = IDENTITY)
