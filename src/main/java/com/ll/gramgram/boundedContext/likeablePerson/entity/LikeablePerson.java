@@ -18,7 +18,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @ToString
 @Entity
 @Getter
-// 호감표시 데이터 클래스
 public class LikeablePerson {
     @Id
     @GeneratedValue(strategy = IDENTITY)

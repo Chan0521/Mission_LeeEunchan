@@ -4,13 +4,11 @@ import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
-import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/likeablePerson")
 @RequiredArgsConstructor
-// 검증하고 서비스를 호출하는 컨트롤러
 public class LikeablePersonController {
     private final Rq rq;
     private final LikeablePersonService likeablePersonService;
@@ -38,29 +35,19 @@ public class LikeablePersonController {
         private final String username;
         private final int attractiveTypeCode;
     }
+
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/add") // 호감표시 추가하는 메소드
+    @PostMapping("/add")
     public String add(@Valid AddForm addForm) {
-        InstaMember instaMember = rq.getMember().getInstaMember();
-        List<LikeablePerson> likeablePeople = instaMember.getFromLikeablePeople();
+        RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
 
-        if (likeablePeople.size() > 0 && likeablePeople.size() < 11) {
-            for (int i = 0; i <= likeablePeople.size(); i++) {
-                if (addForm.getUsername().equals(likeablePeople.get(i).getToInstaMember().getUsername())) {
-                    return rq.historyBack(addForm.getUsername() + "님은 이미 등록되어 있습니다.");
-                    }
-                    }
-                }
-            else if(likeablePeople.size() > 10) {
-                return rq.historyBack("10명까지만 등록할수 있습니다");
-            }
-
-            RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
-            if (createRsData.isFail()) {
-                return rq.historyBack(createRsData);
-            }
-            return rq.redirectWithMsg("/likeablePerson/list", createRsData);
+        if (createRsData.isFail()) {
+            return rq.historyBack(createRsData);
         }
+
+        return rq.redirectWithMsg("/likeablePerson/list", createRsData);
+    }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String showList(Model model) {
@@ -77,7 +64,7 @@ public class LikeablePersonController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
         LikeablePerson likeablePerson = likeablePersonService.findById(id).orElse(null);
 
@@ -92,4 +79,3 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", deleteRsData);
     }
 }
-

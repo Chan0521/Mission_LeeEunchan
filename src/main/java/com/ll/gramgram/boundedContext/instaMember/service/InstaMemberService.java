@@ -21,6 +21,7 @@ public class InstaMemberService {
     public Optional<InstaMember> findByUsername(String username) {
         return instaMemberRepository.findByUsername(username);
     }
+
     @Transactional
     // member : 현재 로그인한 회원
     // username : 입력한 본인 인스타 username
