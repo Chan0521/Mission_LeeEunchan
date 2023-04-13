@@ -33,7 +33,6 @@ public class LikeablePersonService {
         }
 
 
-
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
@@ -56,13 +55,6 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
-//    public RsData test(LikeablePerson a){
-//        if (a.getFromInstaMember() == a.getToInstaMember()){
-//
-//            //return RsData.of("S-2", "호감사유가 %s로 변경되었습니다.");
-//        }
-//    }
-
 
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);

@@ -44,20 +44,23 @@ public class LikeablePersonController {
         InstaMember instaMember = rq.getMember().getInstaMember();
         List<LikeablePerson> likeablePeople = instaMember.getFromLikeablePeople();
 
-        if(likeablePeople.size() > 0 && likeablePeople.size() < 11) {
-            for(int i = 0; i <= likeablePeople.size(); i++){
-                if(addForm.getUsername().equals(likeablePeople.get(i).getToInstaMember().getUsername())) {
-                        return rq.historyBack(addForm.getUsername() + "님은 이미 등록되어 있습니다.");
+        if (likeablePeople.size() > 0 && likeablePeople.size() < 11) {
+            for (int i = 0; i <= likeablePeople.size(); i++) {
+                if (addForm.getUsername().equals(likeablePeople.get(i).getToInstaMember().getUsername())) {
+                    return rq.historyBack(addForm.getUsername() + "님은 이미 등록되어 있습니다.");
+                    }
                     }
                 }
+            else if(likeablePeople.size() > 10) {
+                return rq.historyBack("10명까지만 등록할수 있습니다");
             }
-        RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
-        if (createRsData.isFail()) {
-            return rq.historyBack(createRsData);
-        }
-        return rq.redirectWithMsg("/likeablePerson/list", createRsData);
-    }
 
+            RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
+            if (createRsData.isFail()) {
+                return rq.historyBack(createRsData);
+            }
+            return rq.redirectWithMsg("/likeablePerson/list", createRsData);
+        }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String showList(Model model) {
