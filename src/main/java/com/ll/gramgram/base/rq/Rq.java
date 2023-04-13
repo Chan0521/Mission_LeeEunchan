@@ -17,7 +17,6 @@ import java.util.Date;
 
 @Component
 @RequestScope
-// 로그인 체크와 예외상황 발생때 뒤로가기 + 메세지
 public class Rq {
     private final MemberService memberService;
     private final HttpServletRequest req;

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/instaMember")
 @RequiredArgsConstructor
-// 로그인할때 실행
 public class InstaMemberController {
     private final Rq rq;
     private final InstaMemberService instaMemberService;
