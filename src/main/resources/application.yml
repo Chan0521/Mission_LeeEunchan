@@ -16,30 +16,39 @@ spring:
       client:
         registration:
           naver:
+            clientId: 'x5QeBrYKS1bP_rfJa2iq'
+            client-secret: 'KbZVKEEqh6'
             scope:
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
           kakao:
+            clientId: '6e380f11c02a950014b41f3f74348ce1'
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
             client-authentication-method: POST
           google:
-            scope: profile
+            clientId: '314222130049-jr34b9qian5q7od87acohl4dk240bloj.apps.googleusercontent.com'
+            client-secret: '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'
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
             client-name: Google
-            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
+            scope: profile
           facebook:
-            scope:
+            clientId: '242446535108776'
+            client-secret: 'bab674fdd346af3452d62036ffe1cad8'
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
             client-name: Facebook
-            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
+            scope:
           instagram:
+            client-id: '6042846775770176'
+            client-secret: '7f328808ed63d4bf7b3983d53cdd07e6'
+            provider: instagram
             scope: user_profile,user_media
             client-name: Instagram
-            provider: instagram
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
         provider:
           kakao:
@@ -78,3 +87,16 @@ custom:
       max: 10
   site:
     baseUrl: http://localhost
+
+  security:
+        oauth2:
+          client:
+            registration:
+              naver:
+                devUserOauthId: 'NAVER__9xIgV-SJgWqRYtj3IX5zCOzvdQdTY2okeb9iXO2Zip4'
+              kakao:
+                devUserOauthId: 'KAKAO__2737088692'
+              google:
+                devUserOauthId: 'GOOGLE__103240209825008011930'
+              facebook:
+                devUserOauthId: 'FACEBOOK__6267420483336855'
