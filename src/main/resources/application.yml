@@ -76,8 +76,6 @@ custom:
     modifyCoolTime: '#{60 * 60 * 3}'
     from:
       max: 10
-  site:
-    baseUrl: http://localhost
 
   security:
         oauth2:
