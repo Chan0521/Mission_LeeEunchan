@@ -16,34 +16,25 @@ spring:
       client:
         registration:
           naver:
-            clientId: 'x5QeBrYKS1bP_rfJa2iq'
-            client-secret: 'KbZVKEEqh6'
             scope:
             client-name: Naver
             authorization-grant-type: authorization_code
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
           kakao:
-            clientId: '6e380f11c02a950014b41f3f74348ce1'
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
             client-authentication-method: POST
           google:
-            clientId: '314222130049-jr34b9qian5q7od87acohl4dk240bloj.apps.googleusercontent.com'
-            client-secret: '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'
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
             client-name: Google
             scope: profile
           facebook:
-            clientId: '242446535108776'
-            client-secret: 'bab674fdd346af3452d62036ffe1cad8'
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
             client-name: Facebook
             scope:
           instagram:
-            client-id: '6042846775770176'
-            client-secret: '7f328808ed63d4bf7b3983d53cdd07e6'
             provider: instagram
             scope: user_profile,user_media
             client-name: Instagram
